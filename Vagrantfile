@@ -68,7 +68,7 @@ Vagrant.configure(2) do |config|
     # based on http://wiki.openwrt.org/doc/howto/buildroot.exigence
     export DEBIAN_FRONTEND=noninteractive
     export OPENWRT_RELEASE=15.05
-    export GIT_HASH=483dac821788b457d349233e770329186a0aa860
+    export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
     sudo apt-get update
     sudo apt-get install -y git-core build-essential libssl-dev libncurses5-dev unzip subversion mercurial gettext gawk wget
     sudo -u vagrant git clone --depth=1 git://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git

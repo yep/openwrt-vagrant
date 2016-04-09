@@ -91,23 +91,26 @@ Updating OpenWRT
 
 You only have to use this section if you want to change the OpenWRT version used.
 
-Lool up latest OpenWRT version on http://wiki.openwrt.org/about/history
+Lookv up latest OpenWRT version on http://wiki.openwrt.org/about/history
 
-Current (as of september 2015):
+Current (as of April 2016):
 
-    chaos calmer 15.05, svn r46767
+    chaos calmer 15.05.1, svn r48532
 
-The corresponding svn commit for the 15.05 release:
+The corresponding svn commit for the 15.05.1 release:
 
-    https://dev.openwrt.org/changeset/46767
+    https://dev.openwrt.org/changeset/48532
 
-Loop up the above svn commit (r46767) for this release (15.05) in git:
+Search for the above svn commit by entering "48532" in the search box on:
 
     http://git.openwrt.org/?p=15.05/openwrt.git;a=summary
 
-Search for the svn revsion `46767` to get the corresponding git hash: `483dac821788b457d349233e770329186a0aa860`
+After searching for "48532", press on the link called "commit" to see the git commit hash:
 
-Look up this git hash on github:
+    commit	87e9837a818a71f39c445ee33569279bd78451de
 
-    https://github.com/openwrt-mirror/openwrt/commit/483dac821788b457d349233e770329186a0aa860
+In the Vagrantfile of this repository, update the variable called `GIT_HASH`:
+
+    export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
+
 
