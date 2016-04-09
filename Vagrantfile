@@ -71,7 +71,7 @@ Vagrant.configure(2) do |config|
     export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
     sudo apt-get update
     sudo apt-get install -y git-core build-essential libssl-dev libncurses5-dev unzip subversion mercurial gettext gawk wget
-    sudo -u vagrant git clone --depth=1 git://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git
+    sudo -u vagrant git clone git://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git
     cd openwrt.git
     sudo -u vagrant git checkout $GIT_HASH
     sudo -u vagrant make defconfig
