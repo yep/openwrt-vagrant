@@ -15,7 +15,7 @@ Vagrant.configure(2) do |config|
   #
   # Use Debian 8 from bento because it contains a 40 GB hard disc instead of
   # a 10 GB hard disc in contrast to "debian/jessie64" 
-  config.vm.box = "bento/debian-8.2"
+  config.vm.box = "bento/debian-8.11"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -51,10 +51,10 @@ Vagrant.configure(2) do |config|
     # vb.gui = true
  
     # Customize the amount of memory on the VM (in MB):
-    vb.memory = "6144"
+    vb.memory = "8192"
 
     # Customzie the amount of cpu cores visible to the VM:
-    vb.cpus = 4
+    vb.cpus = 8
   end
   
   # View the documentation for the provider you are using for more
@@ -68,10 +68,10 @@ Vagrant.configure(2) do |config|
     # based on http://wiki.openwrt.org/doc/howto/buildroot.exigence
     export DEBIAN_FRONTEND=noninteractive
     export OPENWRT_RELEASE=15.05
-    export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
+    export GIT_HASH=e6fbf31baae41b618ff333f3ae55ff032333bd6a
     sudo apt-get update
     sudo apt-get install -y git-core build-essential libssl-dev libncurses5-dev unzip subversion mercurial gettext gawk wget
-    sudo -u vagrant git clone git://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git
+    sudo -u vagrant git clone https://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git
     cd openwrt.git
     sudo -u vagrant git checkout $GIT_HASH
     sudo -u vagrant make defconfig
