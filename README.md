@@ -12,24 +12,24 @@ Getting Started
 
 [Download and install VirtualBox](https://www.virtualbox.org/wiki/Downloads) for your operating system.
 
-Open the `Vagrantfile` with a text editor. Update the following VM parameters depending on the number of CPU cores and RAM you have. Do not assign all RAM to the VM or your computer may become very unresponsive.
+Open the `Vagrantfile` with a text editor. Update the following VM parameters depending on the number of CPU cores and RAM you have. Do not assign all RAM to the VM or your computer may become unresponsive.
 
- - `vb.cpus = 4`
- - `vb.memory = "6144"` (6 GB)
+ - `vb.memory = "10240"` (10 GB)
+ - `vb.cpus = 6`
 
 Open a terminal and go to the directory containing the `Vagrantfile`, then type:
 
     vagrant up
 
-This should download a Debian VM and download the OpenWRT git repository. When finished, the next steps are shown:
+This downloads a Debian VM and the OpenWRT git repository. When finished, the next steps are shown:
 
 ```
 ==> default: openwrt setup complete. now type:
 ==> default:   vagrant ssh
 ==> default:   cd openwrt.git
 ==> default:   make menuconfig
-==> default:   make -j4 V=99
-==> default: 
+==> default:   make -j6 V=99
+==> default:
 ==> default: after compilation has finished, copy the result to the host machine:
 ==> default:   cp bin/*/*.{bin,img} /vagrant_data/build
 ==> default:   cp .config /vagrant_data/build/config
@@ -38,11 +38,11 @@ This should download a Debian VM and download the OpenWRT git repository. When f
 Building an existing configuration
 ----------------------------------
 
-The above commands allow you to configure all OpenWRT options using menuconfig. If you already have an OpenWRT config file, you can use this method to build it directly, with no configuration necessary:
+The above commands instruct you to configure OpenWRT using `menuconfig`. If you have a previous OpenWRT config file, use the following method to build it directly.
 
-Name the config file to `openwrt.config.autobuild` and place it next to the `Vagrantfile`.
+Name the config file `openwrt.config.autobuild`, place it next to the `Vagrantfile` and run `vagrant up`.
 
-In the build logs, look for `using configuration file openwrt.config.autobuild` to be sure the config file is used.
+In the logs, look for `using configuration file openwrt.config.autobuild` to be sure the config file is used.
 
 
 Install Option 1: Copying to an SD card
@@ -54,7 +54,7 @@ On OS X, this can be done with the following commands:
 
 - Show available hard disks before adding the SD card:
   `diskutil list`
-- Attach empty 4 GB micro SD card to OSX
+- Attach empty micro SD card to OSX (4 GB or bigger)
 - Show available hard disks after adding the SD card:
   `diskutil list`
 - In this example, the SD card showed up as /dev/disk4. Change disk number in the following commands to match your setup.
@@ -64,21 +64,21 @@ On OS X, this can be done with the following commands:
 - Copy the openwrt image to the SD card:
   `sudo dd if=openwrt-*.img of=/dev/disk4 bs=1m`
 - Press ctrl-t to get the status. If it says `156+0 records out` this means that 156 MB have been copied.
-- Unmount the sd card, again:
+- Unmount the sd card:
   `diskutil unmount /dev/disk4s1`
 
 
 Install Option 2: TFTP
 ----------------------
 
-Some platforms require to flash the OpenWRT to the router using TFTP.
+Some platforms require to flash the OpenWRT image to the router using TFTP.
 
 On OS X, this can be done like this:
 
-- Disconnect from all Wifi and Ethernet networks
-- Set a static IP to your Ethernet device in systems settings. Look up the exact IP depending on your model in the OpenWRT wiki. This example will use `192.168.3.2` with a netmask of `255.255.255.0`
+- Disconnect from all WiFi and Ethernet networks
+- Set a static IP to your Ethernet device in systems settings. Look up the exact IP depending on your router model in the OpenWRT wiki. This example will use `192.168.3.2` with a netmask of `255.255.255.0`
 - Change to the directory containing your OpenWRT image
-- Start tftp with the IP of the router, in this example `192.168.3.1`:
+- Start `tftp` with the IP of the router, in this example `192.168.3.1`:
 
     tftp 192.168.3.1
     > binary
@@ -89,28 +89,12 @@ On OS X, this can be done like this:
 Updating OpenWRT
 ----------------
 
-You only have to use this section if you want to change the OpenWRT version used.
+You only have to do this if you want intend to change the OpenWRT version.
 
-Lookv up latest OpenWRT version on http://wiki.openwrt.org/about/history
+Look up latest OpenWRT version on https://github.com/openwrt/openwrt/tags
 
-Current (as of April 2016):
+Current (as of 2019) is `v18.06.2`
 
-    chaos calmer 15.05.1, svn r48532
+In the `Vagrantfile` of this repository, update the variable called `GIT_TAG`:
 
-The corresponding svn commit for the 15.05.1 release:
-
-    https://dev.openwrt.org/changeset/48532
-
-Search for the above svn commit by entering "48532" in the search box on:
-
-    http://git.openwrt.org/?p=15.05/openwrt.git;a=summary
-
-After searching for "48532", press on the link called "commit" to see the git commit hash:
-
-    commit	87e9837a818a71f39c445ee33569279bd78451de
-
-In the Vagrantfile of this repository, update the variable called `GIT_HASH`:
-
-    export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
-
-
+    export GIT_TAG=v18.06.2

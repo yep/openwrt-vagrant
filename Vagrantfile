@@ -13,9 +13,10 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   #
-  # Use Debian 8 from bento because it contains a 40 GB hard disc instead of
-  # a 10 GB hard disc in contrast to "debian/jessie64" 
-  config.vm.box = "bento/debian-8.2"
+  # Use Debian from bento because it contains a 40 GB hard disc instead of
+  # the 10 GB hard disc in the default Debian images.
+  # Supported Debian versions can be found at https://app.vagrantup.com/bento
+  config.vm.box = "bento/debian-9.6"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -49,31 +50,27 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     # vb.gui = true
- 
+
     # Customize the amount of memory on the VM (in MB):
-    vb.memory = "6144"
+    vb.memory = "10240"
 
     # Customzie the amount of cpu cores visible to the VM:
-    vb.cpus = 4
+    vb.cpus = 6
   end
-  
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+
+  # Enable provisioning with a shell script.
   config.vm.provision "shell", inline: <<-SHELL
-    # build openwrt for raspberry pi 2
     # based on http://wiki.openwrt.org/doc/howto/buildroot.exigence
     export DEBIAN_FRONTEND=noninteractive
-    export OPENWRT_RELEASE=15.05
-    export GIT_HASH=87e9837a818a71f39c445ee33569279bd78451de
+    export GIT_TAG=v18.06.2
     sudo apt-get update
+    sudo apt-get upgrade
     sudo apt-get install -y git-core build-essential libssl-dev libncurses5-dev unzip subversion mercurial gettext gawk wget
-    sudo -u vagrant git clone git://git.openwrt.org/$OPENWRT_RELEASE/openwrt.git openwrt.git
+    sudo -u vagrant git clone --branch master --single-branch git://git.openwrt.org/openwrt/openwrt.git openwrt.git
     cd openwrt.git
-    sudo -u vagrant git checkout $GIT_HASH
+    sudo -u vagrant git fetch --all --tags --prune
+    sudo -u vagrant git checkout tags/${GIT_TAG} -b ${GIT_TAG}
     sudo -u vagrant make defconfig
     sudo -u vagrant make prereq
     sudo -u vagrant ./scripts/feeds update -a
